@@ -1,0 +1,24 @@
+FOR PLAYERS:
+
+If its your first time running the game;
+- make sure u have java extensions installed in vscode
+- run these commands in terminal
+
+run 1st command (this will compile java classes & create a .h file):
+    javac -h src/main/java/tetris src/main/java/tetris/*.java
+
+run 2nd command (this will create a .dll file):
+    x86_64-w64-mingw32-g++ -shared -o tetris_input.dll src/main/java/tetris/tetris_input.cpp -m64 -I"$env:JAVA_HOME/include" -I"$env:JAVA_HOME/include/win32"
+
+
+FOR DEVELOPRS:
+
+If you need to make changes involving the .cpp class or requiring recomilation of java classes, follow these steps:
+
+1.remove all the compiled files (paste all 3 lines at once: )
+
+    forfiles /p src\main\java\tetris /s /m *.class /c "cmd /c del @file"
+    forfiles /p src\main\java\tetris /s /m *.h /c "cmd /c del @file"
+    Remove-Item -Path .\tetris_input.dll -Force
+
+2. run 1st & 2nd command under "FOR PLAYERS" section above.
