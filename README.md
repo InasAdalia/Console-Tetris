@@ -21,13 +21,14 @@ tetris on console. using JNI & c++
 
 
 ## time log (total 27h)
-**v1 (16.5h):**
-> started at 2 Feb 2025. (approx 8 hours maybe) but started recording time at 10 Feb 2025
+_note: started at 2 Feb 2025. (approx 8 hours maybe) but started recording time at 10 Feb 2025_
 
-> pushed at 14 Feb 10pm
+**v1:**
 
-**v2 (10.5 hours):**
-> pushed at 16 Feb 4:32pm
+> pushed at 14 Feb 10pm - (16.5 hours)
 
-**v3 (6 minutes)**
-> pushed at 16 Feb 6:53pm
+**v2:**
+> pushed at 16 Feb 4:32pm - (10.5 hours)
+
+**v3**
+> pushed at 16 Feb 6:53pm - (6 minutes)
