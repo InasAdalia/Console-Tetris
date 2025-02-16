@@ -2,7 +2,7 @@
 tetris on console. using JNI & c++ 
 
 # v2
-- can press space to drop + a visible ghost guide
+- can press space to drop + a visible ghost guide (took me 6h)
 - players can move down, right, left, rotate (z,x)
 - complete lines will be destroyed, score works 
 
