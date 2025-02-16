@@ -1,4 +1,3 @@
-# Console-Tetris
 tetris on console. using JNI & c++ 
 
 # v2
@@ -15,3 +14,15 @@ tetris on console. using JNI & c++
 - allow pause/resume (p)
 - save & load game
 - refactor logic & design patterns
+
+
+
+
+## time log (total 27h)
+**v1 (16.5h):**
+> started at 2 Feb 2025. (approx 8 hours maybe) but started recording time at 10 Feb 2025
+
+> pushed at 14 Feb 10pm
+
+**v2 (10.5 hours):**
+> pushed at 16 Feb 4:32pm
