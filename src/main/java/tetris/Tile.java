@@ -3,6 +3,7 @@ package tetris;
 public enum Tile {
     BLOCK("[]"),
     INACTIVE("[]"),
+    GHOST("[]"),
     EMPTY("  ");
 
 
@@ -10,8 +11,9 @@ public enum Tile {
 
     // ANSI escape codes for colors
     public static final String ANSI_RESET = "\u001B[0m";    //no color
-    public static final String ANSI_ORANGE = "\u001B[33m"; // Orange
-    public static final String ANSI_BLUE = "\u001B[34m";   // Blue
+    public static final String ANSI_CYAN = "\u001B[36m";  // light blue
+    public static final String ANSI_PINK = "\u001B[35m";   // Pink
+    public static final String ANSI_GRAY = "\u001B[90m";   //gray
 
     private final String symbol;
 
@@ -24,9 +26,11 @@ public enum Tile {
     public String getSymbol() {
         switch (this) {
             case BLOCK:
-                return ANSI_ORANGE + symbol + ANSI_RESET;
+                return ANSI_PINK + symbol + ANSI_RESET;
             case INACTIVE:
-                return ANSI_BLUE + symbol + ANSI_RESET;
+                return ANSI_CYAN  + symbol + ANSI_RESET;
+            case GHOST:
+                return ANSI_GRAY + symbol + ANSI_RESET;
             default:
                 return symbol; // No color for EMPTY or other tiles
         }

@@ -1,5 +1,10 @@
 package tetris;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.IntStream;
+
 public class TileLayout {
     
     GameState gameState;
@@ -56,8 +61,8 @@ public class TileLayout {
         return this.tileLayout[row][col].getSymbol();
     }
 
-    public boolean hasBlockAt(int row, int col){
-        return tileLayout[row][col] == Tile.INACTIVE; 
+    public boolean hasBlockAt(Tile tile, int row, int col){
+        return tileLayout[row][col] == tile; 
     }
 
     private boolean isCompleteRow(int row){
@@ -76,7 +81,7 @@ public class TileLayout {
             }
         }
         
-        System.out.println("fullyOccupied at row " + row + ": " + fullyOccupied);
+        // System.out.println("fullyOccupied at row " + row + ": " + fullyOccupied);
         return fullyOccupied; //if theres an empty tile, row is not complete
     }
 
@@ -101,6 +106,52 @@ public class TileLayout {
             if (isCompleteRow(i)){
                 destroyRow(i);
                 gameState.incScore();
+            }
+        }
+    }
+
+    public int getHeightDiff(int x, int y){
+        int finalY = 0;
+        boolean noBlocks=true;
+
+         //iterate every row at x=correspondingX and shift them down
+        for (int i = 0; i < tileLayout.length; i++) {
+            // System.out.println("[debug]checking row: " + i);
+
+            if(tileLayout[i][x]==Tile.INACTIVE){ //if meets an inactive block
+                finalY=i-1;
+                noBlocks=false;
+                System.out.println("[debug] INACTIVE detected, finalY: " + finalY);
+                break;
+            }
+        }
+        if(noBlocks) //if theres no blocks in the way, set finalY to the floor row.
+            finalY = tileLayout.length-1; 
+        
+        System.out.println("[debug][getHieghtDiff()] finalY: " + finalY);
+        if (finalY-y<=0)
+            return -1;
+        else
+            return finalY-y;
+    }
+
+    public void eraseByPattern(Tile pattern){
+        //iterate every tile
+        for (int i = 0; i < tileLayout.length; i++) {
+            for (int j = 0; j < tileLayout[i].length; j++) {
+                if (tileLayout[i][j] == pattern){
+                    tileLayout[i][j] = Tile.EMPTY;
+                }
+            }
+        }
+    }
+
+    public void switchPattern(Tile oldPattern, Tile newPattern){
+        for (int i = 0; i < tileLayout.length; i++) {
+            for (int j = 0; j < tileLayout[i].length; j++) {
+                if (tileLayout[i][j] == Tile.GHOST){
+                    setPatternAt(Tile.INACTIVE, i, j);
+                }
             }
         }
     }

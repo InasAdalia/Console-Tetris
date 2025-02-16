@@ -18,11 +18,8 @@ public class App {
         gameController.genAllBlocks(); 
         gameController.startGame();
         
-        //1. TODO: make rotation check collision first
+        //2. TODO: press space to drop block + ghost block
 
-        //2. TODO: press space to drop block
-
-        //3. TODO: when reaching line 20, wait one tick before deactivating, but within that one thick before deactivating, 
-        //if player moves, the block should still continue moving down and listen for boundaries
+        //3. TODO: make algorithm for block queue
     }
 }

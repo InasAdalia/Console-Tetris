@@ -6,7 +6,7 @@ public class GameState {
     boolean pause;
     boolean gameover;
     Double refreshTime = (double)(100);
-    Double gameSpeed = 1.5d;
+    Double gameSpeed = 2d;
 
     public GameState(){ 
         this.score=0;

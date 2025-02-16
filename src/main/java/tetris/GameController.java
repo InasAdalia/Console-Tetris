@@ -94,11 +94,9 @@ public class GameController {
 
     public void moveActiveBlock(String direction){
         if(activeBlock != null){
-            if (direction.equals("DOWN")||direction.equals("RIGHT")||direction.equals("LEFT")){
-                activeBlock.move(direction);
-            }else if (direction.equals("ROTATER")||direction.equals("ROTATEL")){                
-                activeBlock.rotate(direction);
-            }        
+            
+            activeBlock.move(direction);
+
             gameView.addMessage("key pressed: " + direction + "\n");
         }
     }
