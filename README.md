@@ -1,13 +1,13 @@
 # Console-Tetris
 tetris on console. using JNI & c++ 
 
-# v1
+# v2
+- can press space to drop + a visible ghost guide
 - players can move down, right, left, rotate (z,x)
 - complete lines will be destroyed, score works 
 
 ## To-Do:
-- finish up proper rotate collision checkings
-- create ghost block + drop block
+- fix rotate collision checkings (it suddenly stopped working)
 - algorithm for block generation queue.
 
 ## Future To-Do's
