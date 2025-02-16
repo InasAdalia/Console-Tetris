@@ -13,9 +13,8 @@ public abstract class Block {
     protected int[][] shape;
     protected int[][][] shapes;
     protected Tile tile;
-    protected boolean deactivateOnNext, hasCollided, inQueue, isFirstSpawn;
-    int ghostDiff;
-    boolean drawGhost;
+    protected boolean deactivateOnNext, hasCollided, inQueue, isFirstSpawn, canDrawGhost;
+    protected int ghostDiff;
     
 
     public Block(GameView gameView, TileLayout layout) {
@@ -42,7 +41,7 @@ public abstract class Block {
         int[] oldPosY = posY;
         int[] oldPosX = posX;
         int[] heightDiffs = {-1,-1,-1,-1};
-        drawGhost = false;
+        canDrawGhost = false;
 
         //TODO: refactor this logic
         int initRow,initCol;
@@ -57,9 +56,19 @@ public abstract class Block {
             initCol = 0;
         }
         
-        // gameView.addMessage("init row: " + initRow + " init col: " + initCol);
-
-        preventCollision(initRow, initCol);         //adjusts the initRow and initCol to prevent collision
+        // // gameView.addMessage("init row: " + initRow + " init col: " + initCol);
+        // System.out.println("[debug] all posX: " + Arrays.toString(posX));
+        // System.out.println("[debug] all posY: " + Arrays.toString(posY));
+        // System.out.println("[debug] initial row: " + initRow + " initial col: " + initCol );
+        
+        //prevents collision by adjusting initial drawing points to be within the bounds
+        if (initRow+shape.length>21) {
+            initRow = initRow - (initRow+shape.length-21);
+        } else if(initCol + shape[0].length>11) {
+            initCol = initCol - (initCol+shape[0].length-11);
+        }
+        
+        // System.out.println("[debug] initial row: " + initRow + " initial col: " + initCol );
         int arrayIndex = 0;     //for the for loop down here:
         for (int i = initRow; i<initRow+shape.length; i++) {
             // System.out.println("now reading row " + i);
@@ -71,7 +80,7 @@ public abstract class Block {
                     if(!layout.hasBlockAt( Tile.INACTIVE, i, j)){
 
                         // if (layout.hasBlockAt(Tile.GHOST, i, j))
-                        //     drawGhost=false;
+                        //     canDrawGhost=false;
 
                         if(!inQueue)
                             layout.setPatternAt(this.tile, i, j);
@@ -93,7 +102,7 @@ public abstract class Block {
                             
 
                         //drawing ghost block
-                        if(drawGhost){
+                        if(canDrawGhost){
                             System.out.println("[debug] drawing ghost block, x: " + j + " y: " + (i+ghostDiff) );
                             ghostX[arrayIndex] = j;
                             ghostY[arrayIndex] = i+ghostDiff;
@@ -123,8 +132,8 @@ public abstract class Block {
         if (ghostDiff>0){
             ghostDiff = Arrays.stream(heightDiffs).min().getAsInt(); 
             System.out.println("[debug] min height diff: " + ghostDiff); 
-            // drawGhost = true;
-            drawGhost(ghostDiff);
+            // canDrawGhost = true;
+            canDrawGhost(ghostDiff);
         }
 
         layout.checkRows();
@@ -138,16 +147,15 @@ public abstract class Block {
         //find lowest y point of shape (get shape's highest Y, get its coordinate), and check bottom collision for that point
     };
 
-    public void drawGhost(int heightDiff){
+    public void canDrawGhost(int heightDiff){
         for (int i = 0; i < 4; i++) {
             layout.setPatternAt(Tile.GHOST, posY[i]+heightDiff, posX[i]);
         }
-        drawGhost=true;
+        canDrawGhost=true;
     }
 
     public void eraseBlock(boolean blockOnly) {
-        System.out.println("[debug] before erasing, checking posX: " + Arrays.toString(posX));
-        System.out.println("[debug] before erasing, checking posY: " + Arrays.toString(posY));
+       
         for (int k = 0; k < 4; k++) { // Iterate through the "pieces" of the block
             int i = posY[k]; // Get the row of the k-th piece
             int j = posX[k]; // Get the column of the k-th piece
@@ -184,7 +192,7 @@ public abstract class Block {
         System.out.println("[debug] called dropBlock()");
         //erase original block
         // eraseBlock(true);
-        if (drawGhost){
+        if (canDrawGhost){
             // layout.switchPattern(Tile.GHOST, Tile.INACTIVE);
             for (int i = 0; i < 4; i++) {
                 posX[i] = posX[i]+ghostDiff;
@@ -239,7 +247,7 @@ public abstract class Block {
             } else if (direction.toUpperCase().equals("SPACE")) {
                 System.out.println("SPACE PRESSED");    
                 System.out.println("[debug] called dropBlock()");
-                if (drawGhost){
+                if (canDrawGhost){
                     for (int i = 0; i < 4; i++) {
                         posX[i] = posX[i];
                         posY[i] = posY[i]+ghostDiff;
@@ -271,14 +279,6 @@ public abstract class Block {
             // 
         
         // System.out.println("finished moveDown()");
-    }
-
-    private void preventCollision(int initRow, int initCol){
-        if (initRow+shape.length>21) {
-            initRow = initRow - (initRow+shape.length-21)-2;
-        } else if(initCol + shape[0].length>11) {
-            initCol = initCol - (initCol+shape[0].length-11)-2;
-        }
     }
 
     public boolean willColideBottom(){

@@ -26,9 +26,9 @@ public enum Tile {
     public String getSymbol() {
         switch (this) {
             case BLOCK:
-                return ANSI_PINK + symbol + ANSI_RESET;
+                return ANSI_CYAN+ symbol + ANSI_RESET;
             case INACTIVE:
-                return ANSI_CYAN  + symbol + ANSI_RESET;
+                return ANSI_PINK + symbol + ANSI_RESET;
             case GHOST:
                 return ANSI_GRAY + symbol + ANSI_RESET;
             default:
