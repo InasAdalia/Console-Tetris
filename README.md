@@ -1,13 +1,15 @@
 tetris on console. using JNI & c++ 
 
-# v2
-- can press space to drop + a visible ghost guide (took me 6h)
-- players can move down, right, left, rotate (z,x)
-- complete lines will be destroyed, score works 
+# v3
+- fixed rotation collision - v3
+- can press space to drop + a visible ghost guide (took me 6h) - v2
+- players can move down, right, left, rotate (z,x) - v1
+- complete lines will be destroyed, score works - v1
+
 
 ## To-Do:
-- fix rotate collision checkings (it suddenly stopped working)
 - algorithm for block generation queue.
+- fix double drawBlock call
 
 ## Future To-Do's
 - start from game menu
@@ -26,3 +28,6 @@ tetris on console. using JNI & c++
 
 **v2 (10.5 hours):**
 > pushed at 16 Feb 4:32pm
+
+**v3 (6 minutes)**
+> pushed at 16 Feb 6:53pm
