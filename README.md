@@ -2,7 +2,7 @@
 using JNI & c++ 
 
 # v4
-- proper block queue algorithm (bag of 7)
+- proper block queue algorithm (bag of 7) - v4
 - fixed rotation collision - v3
 - can press space to drop + a visible ghost guide (took me 6h) - v2
 - players can move down, right, left, rotate (z,x) - v1
