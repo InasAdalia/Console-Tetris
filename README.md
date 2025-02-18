@@ -1,4 +1,5 @@
-tetris on console. using JNI & c++ 
+# Console-Tetris
+using JNI & c++ 
 
 # v4
 - proper block queue algorithm (bag of 7)
@@ -21,7 +22,7 @@ tetris on console. using JNI & c++
 
 
 
-## time log (total 27h)
+## Time Log (total 30.25h)
 _note: started at 2 Feb 2025. (approx 8 hours maybe) but started recording time at 10 Feb 2025_
 
 **v1:**
