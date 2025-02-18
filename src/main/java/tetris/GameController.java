@@ -2,8 +2,11 @@ package tetris;
 
 import java.util.Random;
 
+import org.jline.builtins.ssh.Ssh;
+
 public class GameController {
 
+    BlockList blockList;
     GameState gameState;
     GameView gameView;
     TileLayout layout;
@@ -16,37 +19,35 @@ public class GameController {
     Random random = new Random();
     boolean canStartMove = false;
 
+    public GameController(GameView gameView, GameState gameState, TileLayout layout) {
+        this.gameView = gameView;
+        this.gameState = gameState;
+        this.layout = layout;
+        this.generator = new BlockGenerator(gameView, layout);
+        this.blockList = new BlockList(generator, gameView); //shuffledList is already prepared atp.
+    }
+    
     Thread speedGame = new Thread(new Runnable(){
         @Override
         public void run() {
             while (!gameState.isPaused()){
                 try {
-                    
-                    genAllBlocks();
-                    
-                    // if(activeBlock.willColideBottom()){
-                    //     gameState.setGameover(activeBlock.hasCollided); //DOESNT WORK
-                    //     break;
-                    // }
-                    
-                    if(!activeBlock.hasCollided){
-                        // activeBlock.move(movements[random.nextInt(movements.length)]);
-                        // activeBlock.rotate(rotations[random.nextInt(rotations.length)]);
-                        if (canStartMove)
-                            activeBlock.move("DOWN");
-                        canStartMove = true;
-                    } else {
-                        //shift queue
-                        blockQueue[0] = blockQueue[1]; 
-                        // blockQueue[1] = null;
-                        canStartMove = false;
 
-                        // //draw active block
-                        // activeBlock.drawBlock();
+                    System.out.println(blockList.printBlockList());
+                    blockList.getActiveBlock().drawBlock();
+                    blockList.getNextBlock().drawBlock();
+
+                    
+                    if(!blockList.getActiveBlock().hasCollided){
+                        if (blockList.canStartMove())
+                            blockList.getActiveBlock().move("DOWN");
+                        blockList.setStartMove(true);
+                    } else {
+                        blockList.shiftQueue(); // 5,6 > 6,0   tempBlock = 6 > renewList
+                        // canStartMove=false;
                     }    
                     
                     // layout.checkRows();
-
                     Thread.sleep((long) (gameState.getGameSpeed() * gameState.getRefreshTime()));
 
                 } catch (InterruptedException e) {
@@ -56,52 +57,18 @@ public class GameController {
         }
     });
     
-    public GameController(GameView gameView, GameState gameState, TileLayout layout){
-        this.gameView = gameView;
-        this.gameState = gameState;
-        this.layout = layout;
-        this.generator = new BlockGenerator(gameView, layout);
-    }
-
-    public void genAllBlocks(){
-        if (blockQueue[0] == null) {
-            blockQueue[0] = (generator.generateBlock(blockTypes[random.nextInt(blockTypes.length)]));
-            activeBlock = blockQueue[0];
-            
-            canStartMove = false;
-            // gameView.addMessage("generating active block " + activeBlock.getType() + "\n");
-            // gameView.addMessage("generating queue[0] " + blockQueue[0].getType() + "\n");
-        }  else if (blockQueue[0]==blockQueue[1]){
-            activeBlock = blockQueue[0];
-            blockQueue[1] = null;
-            canStartMove = false;
-            activeBlock.setForQueue(false);
-            // gameView.addMessage("shifting blocks, active block: " + activeBlock.getType() + "\n");
-        }
-
-        if (blockQueue[1] == null){
-            
-            blockQueue[1] = (generator.generateBlock(blockTypes[random.nextInt(blockTypes.length)]));
-            blockQueue[1].setForQueue(true);
-        
-            // gameView.addMessage("generating queue[1]: " + blockQueue[1].getType() + "\n");
-            gameView.setQueue(blockQueue[1]);
-        }
-
-        blockQueue[1].drawBlock();
-        // activeBlock.drawBlock();
-    }
 
     public void moveActiveBlock(String direction){
-        if(activeBlock != null){
+        if(blockList.getActiveBlock() != null){
             
-            activeBlock.move(direction);
+            blockList.getActiveBlock().move(direction);
 
-            gameView.addMessage("key pressed: " + direction + "\n");
+            // gameView.addMessage("[debug] key pressed: " + direction + "\n");
         }
     }
 
     public void startGame(){
+        
         speedGame.start();
     }
 

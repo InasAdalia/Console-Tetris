@@ -4,9 +4,7 @@ public class BlockGenerator {
 
     protected GameView gameView;
     protected TileLayout layout;
-
-    Block generatedBlock;
-
+    
     public BlockGenerator(GameView gameView, TileLayout layout){
         this.layout = layout;
         this.gameView = gameView;

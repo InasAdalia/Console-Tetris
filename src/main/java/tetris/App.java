@@ -13,13 +13,11 @@ public class App {
         
         gameView.showGameLayout();
         tetrisInput.startKeyListener();
+    
         
-        
-        gameController.genAllBlocks(); 
         gameController.startGame();
-        
-        //2. TODO: press space to drop block + ghost block
-
-        //3. TODO: make algorithm for block queue
+    
+        //3. TODO: fix algorithm for block queue
+        // - theres a problem with second round logic.
     }
 }

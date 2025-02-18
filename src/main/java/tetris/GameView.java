@@ -47,7 +47,7 @@ public class GameView {
         return messageSB.append(message).toString();
     }
 
-    public void setQueue(Block block){
+    public void setQueueLayout(Block block){
         //erase the previous block in queue
         for (int i=0; i<qLayout.length; i++) {
             for (int j=0; j<qLayout[i].length; j++) {

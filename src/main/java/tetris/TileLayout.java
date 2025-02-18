@@ -121,14 +121,14 @@ public class TileLayout {
             if(tileLayout[i][x]==Tile.INACTIVE){ //if meets an inactive block
                 finalY=i-1;
                 noBlocks=false;
-                System.out.println("[debug] INACTIVE detected, finalY: " + finalY);
+                // System.out.println("[debug] INACTIVE detected, finalY: " + finalY);
                 break;
             }
         }
         if(noBlocks) //if theres no blocks in the way, set finalY to the floor row.
             finalY = tileLayout.length-1; 
         
-        System.out.println("[debug][getHieghtDiff()] finalY: " + finalY);
+        // System.out.println("[debug][getHieghtDiff()] finalY: " + finalY);
         if (finalY-y<=0)
             return -1;
         else
