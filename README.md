@@ -25,15 +25,25 @@ using JNI & c++
 ## Time Log (total 30.25h)
 _note: started at 2 Feb 2025. (approx 8 hours maybe) but started recording time at 10 Feb 2025_
 
-**v1:**
+**start**
 
 > pushed at 14 Feb 10pm - (16.5 hours)
 
-**v2:**
+**v1**
 > pushed at 16 Feb 4:32pm - (10.5 hours)
 
-**v3**
+**v2**
 > pushed at 16 Feb 6:53pm - (6 minutes)
 
-**v4**
+**v3**
 > pushed at 18 Feb 4:16pm - (3.25 hours)
+
+**v5**
+
+
+
+## Github
+git add .
+git commit -m " message "
+git pull origin master --rebase
+git push origin master
