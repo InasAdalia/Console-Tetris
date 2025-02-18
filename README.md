@@ -43,7 +43,7 @@ _note: started at 2 Feb 2025. (approx 8 hours maybe) but started recording time 
 
 
 ## Github
-git add .
-git commit -m " message "
-git pull origin master --rebase
-git push origin master
+1. git add .
+2. git commit -m " message "
+3. git pull origin master --rebase
+4. git push origin master
