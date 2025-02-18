@@ -1,6 +1,7 @@
 tetris on console. using JNI & c++ 
 
-# v3
+# v4
+- proper block queue algorithm (bag of 7)
 - fixed rotation collision - v3
 - can press space to drop + a visible ghost guide (took me 6h) - v2
 - players can move down, right, left, rotate (z,x) - v1
@@ -8,8 +9,8 @@ tetris on console. using JNI & c++
 
 
 ## To-Do:
-- algorithm for block generation queue.
 - fix double drawBlock call
+- fix ghost drawing delay
 
 ## Future To-Do's
 - start from game menu
@@ -32,3 +33,6 @@ _note: started at 2 Feb 2025. (approx 8 hours maybe) but started recording time 
 
 **v3**
 > pushed at 16 Feb 6:53pm - (6 minutes)
+
+**v4**
+> pushed at 18 Feb 4:16pm - (3.25 hours)
