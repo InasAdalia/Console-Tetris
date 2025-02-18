@@ -10,6 +10,7 @@ using JNI & c++
 
 
 ## To-Do:
+- fix destroyLine not including old block
 - fix double drawBlock call
 - fix ghost drawing delay
 
