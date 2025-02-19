@@ -55,12 +55,12 @@ public abstract class Block {
             initRow = 0;
             initCol = 0;
         }
-        // System.out.println("[debug] inQueue: " + inQueue + " isFirstSpawn: " + isFirstSpawn);
+        System.out.println("[debug] inQueue: " + inQueue + " isFirstSpawn: " + isFirstSpawn);
         
         // // gameView.addMessage("[debug] init row: " + initRow + " init col: " + initCol);
-        // // System.out.println("[debug] all posX: " + Arrays.toString(posX));
-        // // System.out.println("[debug] all posY: " + Arrays.toString(posY));
-        // System.out.println("[debug] initial row: " + initRow + " initial col: " + initCol );
+        System.out.println("[debug] all posX: " + Arrays.toString(posX));
+        System.out.println("[debug] all posY: " + Arrays.toString(posY));
+        System.out.println("[debug] initial row: " + initRow + " initial col: " + initCol );
         
         //prevents collision by adjusting initial drawing points to be within the bounds
         if (initRow+shape.length>21) {
@@ -69,13 +69,13 @@ public abstract class Block {
             initCol = initCol - (initCol+shape[0].length-11);
         }
         
-        // // System.out.println("[debug] initial row: " + initRow + " initial col: " + initCol );
+        // System.out.println("[debug] initial row: " + initRow + " initial col: " + initCol );
         int arrayIndex = 0;     //for the for loop down here:
         for (int i = initRow; i<initRow+shape.length; i++) {
-            // // System.out.println("[debug] now reading row " + i);
+            // System.out.println("[debug] now reading row " + i);
             for (int j = initCol; j<initCol+shape[0].length; j++) { // shape[0].length to handle non-square shapes
 
-                // // System.out.println("[debug] now reading col: " + j + " no. of col per row is: " + shape[0].length);
+                // System.out.println("[debug] now reading col: " + j + " no. of col per row is: " + shape[0].length);
                 if (shape[i-initRow][j-initCol] == 1) { 
 
                     if(!layout.hasBlockAt( Tile.INACTIVE, i, j)){
@@ -95,7 +95,7 @@ public abstract class Block {
                         ghostDiff = layout.getHeightDiff(posX[arrayIndex], posY[arrayIndex]);
                         // System.out.println("ghost diff: " + ghostDiff);
                         if(!inQueue && !isFirstSpawn && ghostDiff!=-1){
-                            // // System.out.println("[debug] adding into hieght diff array");
+                            // System.out.println("[debug] adding into hieght diff array");
                             heightDiffs[arrayIndex] = ghostDiff;
                         }
 
@@ -104,7 +104,7 @@ public abstract class Block {
 
                         //drawing ghost block
                         if(canDrawGhost){
-                            // // System.out.println("[debug] drawing ghost block, x: " + j + " y: " + (i+ghostDiff) );
+                            // System.out.println("[debug] drawing ghost block, x: " + j + " y: " + (i+ghostDiff) );
                             ghostX[arrayIndex] = j;
                             ghostY[arrayIndex] = i+ghostDiff;
                             layout.setPatternAt(Tile.GHOST, i+ghostDiff, j);
@@ -125,18 +125,19 @@ public abstract class Block {
             }
         }
 
-        // // System.out.println("[debug] heightDiffs: " + Arrays.toString(heightDiffs));
+        // System.out.println("[debug] heightDiffs: " + Arrays.toString(heightDiffs));
         ghostDiff = Arrays.stream(heightDiffs).min().getAsInt(); 
         if (ghostDiff>0){
             ghostDiff = Arrays.stream(heightDiffs).min().getAsInt(); 
-            // // System.out.println("[debug] min height diff: " + ghostDiff); 
+            System.out.println("[debug] min height diff: " + ghostDiff); 
             drawGhost(ghostDiff);
         }
 
-        layout.checkRows();
         isFirstSpawn = false;
+        layout.checkRows();
+        System.out.println("[debug] drawBlock called checkRows");
         gameView.showGameLayout();
-        // System.out.println("[debug] drew block at Pos X: " + posX[0] + " Pos Y: " + posY[0]);
+        System.out.println("[debug] drew block at Pos X: " + posX[0] + " Pos Y: " + posY[0]);
         // showBlockFields();
 
 
@@ -157,21 +158,27 @@ public abstract class Block {
             int i = posY[k]; // Get the row of the k-th piece
             int j = posX[k]; // Get the column of the k-th piece
             layout.setPatternAt(Tile.EMPTY, i, j);
-            // // System.out.println("[debug] erasing Pos X: " + posX[k] + " Pos Y: " + posY[k]);
+            System.out.println("[debug] erasing Pos X: " + posX[k] + " Pos Y: " + posY[k]);
         }
 
         // if (!blockOnly)
         layout.eraseByPattern(Tile.GHOST);
-        // // System.out.println("[debug] finished eraseBlock()");
+        System.out.println("[debug] finished eraseBlock()");
         // showBlockFields();
     }
 
     public void deactivateBlock(){ //sets all tiles to INACTIVE
         hasCollided = true;
         tile = Tile.INACTIVE;
+        for (int k = 0; k < 4; k++) { // Iterate through the "pieces" of the block
+            int i = posY[k]; // Get the row of the k-th piece
+            int j = posX[k]; // Get the column of the k-th piece
+            layout.setPatternAt(this.tile, i, j);
+            System.out.println("[debug] setting deactivated block at X: " + posX[k] + " Pos Y: " + posY[k]);
+        }
         // drawBlock();
         // layout.checkRows(); //check rows to be destroyed
-        // System.out.println("[debug] deactivateBlock() finished");
+        System.out.println("[debug] deactivateBlock() finished");
     }
 
     public void reactivateBlock(){
@@ -186,7 +193,7 @@ public abstract class Block {
     }
 
     public void dropBlock(){
-        // System.out.println("[debug] called dropBlock()");
+        System.out.println("[debug] called dropBlock()");
         //erase original block
         // eraseBlock(true);
         if (canDrawGhost){
@@ -197,8 +204,7 @@ public abstract class Block {
                 // layout.setPatternAt(Tile.INACTIVE, posY[i]+ghostDiff, posX[i]);
             }
             deactivateOnNext=true;
-            // deactivateBlock();
-            // System.out.println("[debug] should be dropping");
+            System.out.println("[debug] should be dropping");
         }
         
     }
@@ -243,15 +249,15 @@ public abstract class Block {
                 deactivateOnNext = false;
 
             } else if (direction.toUpperCase().equals("SPACE")) {
-                // System.out.println("[debug] SPACE PRESSED");    
-                // System.out.println("[debug] called dropBlock()");
+                System.out.println("[debug] SPACE PRESSED");    
+                System.out.println("[debug] called dropBlock()");
                 if (canDrawGhost){
                     for (int i = 0; i < 4; i++) {
                         posX[i] = posX[i];
                         posY[i] = posY[i]+ghostDiff;
                     }
                     deactivateBlock();
-                    // System.out.println("[debug] should be dropping");
+                    System.out.println("[debug] should be dropping");
                 }
             }
 
@@ -266,12 +272,13 @@ public abstract class Block {
                 }
             } else if (willColideBottom() && !deactivateOnNext){
                 deactivateOnNext = true;
-                // System.out.println("[debug] gonna deactivate next tick");
+                System.out.println("[debug] gonna deactivate next tick");
                 // layout.checkRows();
             } else if (willColideBottom() && deactivateOnNext){
-                // System.out.println("[debug] willColideBottom() and deactivateOnNext is true, deactivating...");
+                System.out.println("[debug] willColideBottom() and deactivateOnNext is true, deactivating...");
                 deactivateBlock();
             }
+            System.out.println("[debug] move() calling drawBlock()");
             drawBlock();
         }
         

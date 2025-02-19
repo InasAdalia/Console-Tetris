@@ -6,14 +6,15 @@ public class App {
 
         
         GameState gameState = new GameState();
-        TileLayout layout = new TileLayout(gameState);
+        TileLayout layout = new TileLayout(gameState, null);
         GameView gameView = new GameView(layout, gameState);
         GameController gameController = new GameController(gameView, gameState, layout);
         TetrisInput tetrisInput = new TetrisInput(gameController);
+        layout.setGameController(gameController);
         
         gameView.showGameLayout();
         tetrisInput.startKeyListener();
-    
+
         
         gameController.startGame();
     

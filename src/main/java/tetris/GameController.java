@@ -17,7 +17,7 @@ public class GameController {
     String[] movements = {"LEFT", "RIGHT", "NONE"};
     String[] rotations = {"ROTATER", "ROTATEL", "NONE"};
     Random random = new Random();
-    boolean canStartMove = false;
+    boolean canStartMove = false, canDrawBlocks = true;
 
     public GameController(GameView gameView, GameState gameState, TileLayout layout) {
         this.gameView = gameView;
@@ -34,20 +34,25 @@ public class GameController {
                 try {
 
                     System.out.println(blockList.printBlockList());
-                    blockList.getActiveBlock().drawBlock();
-                    blockList.getNextBlock().drawBlock();
 
+                    //check condition, if line is destroyed then skip drawBlock, just shiftQueue
+                    if (canDrawBlocks){
+                        blockList.getNextBlock().drawBlock();
+                        blockList.getActiveBlock().drawBlock();
+                        System.out.println("[debug] thread calling drawBlock");
+                    }
                     
                     if(!blockList.getActiveBlock().hasCollided){
                         if (blockList.canStartMove())
                             blockList.getActiveBlock().move("DOWN");
+                            System.out.println("[debug] thread's move down calling drawBlock");
                         blockList.setStartMove(true);
                     } else {
                         blockList.shiftQueue(); // 5,6 > 6,0   tempBlock = 6 > renewList
-                        // canStartMove=false;
+                        System.out.println("[debug] shiftQueue called");
                     }    
                     
-                    // layout.checkRows();
+                    canDrawBlocks=true; //reset
                     Thread.sleep((long) (gameState.getGameSpeed() * gameState.getRefreshTime()));
 
                 } catch (InterruptedException e) {
@@ -56,6 +61,10 @@ public class GameController {
             }
         }
     });
+
+    public void setCanDrawBlocks(boolean bool){
+        canDrawBlocks = bool;
+    }
     
 
     public void moveActiveBlock(String direction){

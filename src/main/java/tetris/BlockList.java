@@ -55,7 +55,6 @@ public class BlockList {
         
         Block block;
         if (counter == 6){
-            //nextBlock will be zero. so should have renewed list atp or before this
             block = tempBlock;
         } else
             block = shuffledList[counter%6]; 
@@ -89,11 +88,8 @@ public class BlockList {
     }
 
     public void shiftQueue(){
-        int prevCounter = counter;
-        // System.out.println("[debug] prevCounter: " + prevCounter);
         incCounter();
         canStartMove = false;
-        
         // System.out.println("[debug] current counter: " + counter);
         if (counter==6){
             renewList();

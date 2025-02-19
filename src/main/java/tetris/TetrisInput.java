@@ -59,7 +59,7 @@ public class TetrisInput {
 
     public void keySpace(){
         gameController.moveActiveBlock("SPACE");
-        System.out.println("key space ");
+        // System.out.println("key space ");
     }
 
     public void keyEsc(){

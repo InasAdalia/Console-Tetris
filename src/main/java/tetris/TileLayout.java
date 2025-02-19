@@ -1,17 +1,13 @@
 package tetris;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.IntStream;
-
 public class TileLayout {
     
+    GameController gameController;
     GameState gameState;
     int initRow=0, initCol=3;
     Tile[][] tileLayout;
 
-    public TileLayout(GameState gameState) {
+    public TileLayout(GameState gameState, GameController gameController) {
         this.gameState = gameState;
         tileLayout = new Tile [21][11];
         
@@ -20,6 +16,10 @@ public class TileLayout {
                 tileLayout[i][j] = Tile.EMPTY;
             }
         }
+    }
+
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
     }
 
     public void showLayout(){
@@ -98,6 +98,8 @@ public class TileLayout {
                 tileLayout[i][j] = tileLayout[i-1][j];
             }
         }
+
+        System.out.println("[debug] destroyed row");
         
     }
 
@@ -106,6 +108,7 @@ public class TileLayout {
             if (isCompleteRow(i)){
                 destroyRow(i);
                 gameState.incScore();
+                gameController.setCanDrawBlocks(false);
             }
         }
     }
