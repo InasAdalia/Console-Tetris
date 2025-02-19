@@ -22,7 +22,9 @@ using JNI & c++
 
 
 ## To-Do:
-- fix double drawBlock call
+- add lose game logic.
+- fix double drawBlock call (causing minor glitches)
+- increase game speed as they play
 
 ## Future To-Do's
 - start from game menu
