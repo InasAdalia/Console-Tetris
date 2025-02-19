@@ -4,7 +4,7 @@ public class TetrisInput {
 
     private GameController gameController;
 
-    // // Load the C++ library
+    // Load the C++ library
     static {
         System.loadLibrary("tetris_input"); // This must match your compiled DLL name
     }

@@ -9,7 +9,7 @@ public class TileLayout {
 
     public TileLayout(GameState gameState, GameController gameController) {
         this.gameState = gameState;
-        tileLayout = new Tile [21][11];
+        tileLayout = new Tile [20][10];
         
         for (int i = 0; i < tileLayout.length; i++) {
             for (int j = 0; j < tileLayout[i].length; j++) {
@@ -26,12 +26,12 @@ public class TileLayout {
 
         System.out.printf("%4s", "");
         for (int i = 0; i < tileLayout[0].length; i++) {
-            System.out.print(i+" ");
+            System.out.print((i+1)+" ");
         }
         System.out.println();
         
-        for (int i = 0; i < tileLayout.length; i++) {
-            System.out.printf("%2d |", i);
+        for (int i = 0; i <tileLayout.length; i++) {
+            System.out.printf("%2d |", i+1);
             for (int j = 0; j < tileLayout[i].length; j++) {
                 System.out.print(tileLayout[i][j].getSymbol());
             }

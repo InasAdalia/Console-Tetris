@@ -4,7 +4,7 @@ public enum Tile {
     BLOCK("[]"),
     INACTIVE("[]"),
     GHOST("[]"),
-    EMPTY("  ");
+    EMPTY(". ");
 
 
     boolean isActive= true;
@@ -30,6 +30,8 @@ public enum Tile {
             case INACTIVE:
                 return ANSI_PINK + symbol + ANSI_RESET;
             case GHOST:
+                return ANSI_GRAY + symbol + ANSI_RESET;
+            case EMPTY:
                 return ANSI_GRAY + symbol + ANSI_RESET;
             default:
                 return symbol; // No color for EMPTY or other tiles

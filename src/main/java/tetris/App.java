@@ -13,12 +13,10 @@ public class App {
         layout.setGameController(gameController);
         
         gameView.showGameLayout();
-        tetrisInput.startKeyListener();
-
-        
-        gameController.startGame();
+        tetrisInput.startKeyListener(); 
+        // gameController.startGame();
+        gameController.startSpecial();
     
-        //3. TODO: fix algorithm for block queue
-        // - theres a problem with second round logic.
+        //TODO: fix drop block glitch
     }
 }

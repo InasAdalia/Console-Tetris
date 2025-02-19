@@ -100,13 +100,6 @@ public abstract class Block {
                             heightDiffs[arrayIndex] = ghostDiff;
                         }
 
-                        //setting ghost block coordinates
-                        if(canDrawGhost){
-                            // System.out.println("[debug] drawing ghost block, x: " + j + " y: " + (i+ghostDiff) );
-                            ghostX[arrayIndex] = j;
-                            ghostY[arrayIndex] = i+ghostDiff;
-                        }
-
                     } else { //if the new shape collides with blocks, do not draw it and keep the prev shape.
                         
                         posX = oldPosX;
@@ -130,19 +123,15 @@ public abstract class Block {
 
         isFirstSpawn = false;
         layout.checkRows();
-        System.out.println("[debug] drawBlock called checkRows");
         gameView.showGameLayout();
-        System.out.println("[debug] drew block at Pos X: " + posX[0] + " Pos Y: " + posY[0]);
+        // System.out.println("[debug] drew block at Pos X: " + posX[0] + " Pos Y: " + posY[0]);
         // showBlockFields();
-
-
-        //TODO: cast a ghost block for instant dropping
-        //find lowest y point of shape (get shape's highest Y, get its coordinate), and check bottom collision for that point
     };
 
     public void drawGhost(int heightDiff){
         for (int i = 0; i < 4; i++) {
-            layout.setPatternAt(Tile.GHOST, posY[i]+heightDiff, posX[i]);
+            if (!layout.hasBlockAt(Tile.BLOCK, posY[i]+heightDiff, posX[i]))
+                layout.setPatternAt(Tile.GHOST, posY[i]+heightDiff, posX[i]);
         }
         canDrawGhost=true;
     }
@@ -151,7 +140,6 @@ public abstract class Block {
        
         for (int k = 0; k < 4; k++) { // Iterate through the "pieces" of the block
             layout.setPatternAt(Tile.EMPTY, posY[k], posX[k]);
-            // System.out.println("[debug] erasing Pos X: " + posX[k] + " Pos Y: " + posY[k]);
         }
         layout.eraseByPattern(Tile.GHOST);
     }
@@ -160,10 +148,7 @@ public abstract class Block {
         hasCollided = true;
         tile = Tile.INACTIVE;
         for (int k = 0; k < 4; k++) { // Iterate through the "pieces" of the block
-            int i = posY[k]; // Get the row of the k-th piece
-            int j = posX[k]; // Get the column of the k-th piece
-            layout.setPatternAt(this.tile, i, j);
-            System.out.println("[debug] setting deactivated block at X: " + posX[k] + " Pos Y: " + posY[k]);
+            layout.setPatternAt(this.tile, posY[k], posX[k]);
         }
         // drawBlock();
         // layout.checkRows(); //check rows to be destroyed
@@ -173,29 +158,6 @@ public abstract class Block {
     public void reactivateBlock(){
         hasCollided=false;
         tile= Tile.BLOCK;
-    }
-
-    public void showBlockFields(){  //for debuggin purposes
-        for (int k = 0; k < 4; k++) { // Iterate through the "pieces" of the block
-            System.out.println("index: " + k + " posX: "+ posX[k] + " Pos Y: " + posY[k]);
-        }
-    }
-
-    public void dropBlock(){
-        System.out.println("[debug] called dropBlock()");
-        //erase original block
-        // eraseBlock(true);
-        if (canDrawGhost){
-            // layout.switchPattern(Tile.GHOST, Tile.INACTIVE);
-            for (int i = 0; i < 4; i++) {
-                posX[i] = posX[i]+ghostDiff;
-                posY[i] = posY[i]+ghostDiff;
-                // layout.setPatternAt(Tile.INACTIVE, posY[i]+ghostDiff, posX[i]);
-            }
-            deactivateOnNext=true;
-            System.out.println("[debug] should be dropping");
-        }
-        
     }
 
     public void move(String direction) {
@@ -264,7 +226,7 @@ public abstract class Block {
 
     public boolean willColideBottom(){
         for (int i = 0; i < 4; i++) {
-            if (posY[i] + 1 >= 21 || layout.hasBlockAt(Tile.INACTIVE, posY[i] + 1, posX[i])) {
+            if (posY[i] + 1 >= layout.tileLayout.length || layout.hasBlockAt(Tile.INACTIVE, posY[i] + 1, posX[i])) {
                 return true;
             }
         }
@@ -288,22 +250,19 @@ public abstract class Block {
         return false;
     }
 
-    public String getType(){
-        return type;
-    }
-
     public void setForQueue(boolean inQueue){
         this.inQueue = inQueue;
         if (inQueue)
             gameView.setQueueLayout(this);
     }
 
-    public void setIsFirstSpawn(boolean isFirstSpawn){
-        this.isFirstSpawn = isFirstSpawn;
-    }
-
     public boolean getInQueue(){
         return inQueue;
     }
+
+    public void setIsFirstSpawn(boolean isFirstSpawn){
+        this.isFirstSpawn = isFirstSpawn;
+    }
+    
 }
 

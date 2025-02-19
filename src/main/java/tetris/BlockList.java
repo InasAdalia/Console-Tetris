@@ -7,17 +7,17 @@ import java.util.List;
 public class BlockList {
 
     BlockGenerator blockGenerator;
-    private Block[] blockList, shuffledList;
+    private Block[] shuffledList;
     private int counter;
     private Block tempBlock;
-    private boolean canStartMove; //for active block
+    private boolean canStartMove, specialMode; //for active block
     
     public BlockList(BlockGenerator blockGenerator, GameView gameView){
         this.blockGenerator = blockGenerator;
         this.tempBlock = null;
         this.counter=0;
-
-        shuffleList();
+        // shuffleList();
+        specialList();
     }
 
     public String printBlockList(){
@@ -40,24 +40,40 @@ public class BlockList {
         this.shuffledList = tempList.toArray(new Block[0]);
     }
 
+    public void specialList(){
+        Block[] list = {
+            blockGenerator.generateBlock("TEE"),
+            blockGenerator.generateBlock("ZACKL"),
+            blockGenerator.generateBlock("ELLER"),
+            blockGenerator.generateBlock("TEE"),
+            blockGenerator.generateBlock("TEE"),
+            blockGenerator.generateBlock("ELLER"),
+            blockGenerator.generateBlock("ZACKR"),
+            blockGenerator.generateBlock("ZACKR"),
+            blockGenerator.generateBlock("TEE"),
+            blockGenerator.generateBlock("TEE"),
+            blockGenerator.generateBlock("LONG")
+        };
+
+        this.shuffledList = list;
+        this.specialMode = true;
+    }
+
     public Block getBlock(int index){
         return shuffledList[index];
     }
 
-    // public void initActiveBlock(){
-    //     Block block;
-    //     block = counter == 6? shuffledList[6] : shuffledList[counter%7]; 
-    //     block.setForQueue(false);
-    //     block.setIsFirstSpawn(!canStartMove);
-    // }
-
     public Block getActiveBlock(){
-        
         Block block;
-        if (counter == 6){
-            block = tempBlock;
-        } else
-            block = shuffledList[counter%6]; 
+        if (specialMode){
+            block = shuffledList[counter];
+        }else{
+            if (counter == 6){
+                block = tempBlock;
+            } else
+                block = shuffledList[counter%6]; 
+        }
+        
         block.setForQueue(false);
         block.setIsFirstSpawn(!canStartMove);
 
@@ -66,7 +82,14 @@ public class BlockList {
 
     public Block getNextBlock(){
         Block block;
-        block = shuffledList[(counter+1)%7];
+        if (specialMode){
+            if (counter+1 > 10){
+                block = shuffledList[counter];
+            } else
+                block = shuffledList[counter+1];
+        } else {
+            block = shuffledList[(counter+1)%7];
+        }
         block.setForQueue(true);
         return block;
     }
@@ -80,19 +103,26 @@ public class BlockList {
     }
 
     private void incCounter(){
-        if (counter+1 <=6){
+        if (specialMode){
             counter++;
-        } else {
-            counter=0;
+        }else {
+            if (counter+1 <=6){
+                counter++;
+            } else {
+                counter=0;
+            }
         }
+        
     }
 
     public void shiftQueue(){
         incCounter();
         canStartMove = false;
         // System.out.println("[debug] current counter: " + counter);
-        if (counter==6){
+        if (counter==6 && !specialMode){
             renewList();
+        } else if (counter==10 && specialMode){
+            System.exit(0);
         }
     }
 

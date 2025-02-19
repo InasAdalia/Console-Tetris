@@ -2,8 +2,6 @@ package tetris;
 
 import java.util.Random;
 
-import org.jline.builtins.ssh.Ssh;
-
 public class GameController {
 
     BlockList blockList;
@@ -12,10 +10,6 @@ public class GameController {
     TileLayout layout;
     BlockGenerator generator;
     Block activeBlock; //null
-    Block[] blockQueue = {null, null};
-    String[] blockTypes = {"Smashboy", "ElleR", "ElleL", "ZackL", "ZackR", "Long", "Tee"};
-    String[] movements = {"LEFT", "RIGHT", "NONE"};
-    String[] rotations = {"ROTATER", "ROTATEL", "NONE"};
     Random random = new Random();
     boolean canStartMove = false, canDrawBlocks = true;
 
@@ -27,7 +21,7 @@ public class GameController {
         this.blockList = new BlockList(generator, gameView); //shuffledList is already prepared atp.
     }
     
-    Thread speedGame = new Thread(new Runnable(){
+    Thread runGame = new Thread(new Runnable(){
         @Override
         public void run() {
             while (!gameState.isPaused()){
@@ -35,17 +29,15 @@ public class GameController {
 
                     // System.out.println(blockList.printBlockList());
 
-                    //check condition, if line is destroyed then skip drawBlock, just shiftQueue
-                    if (canDrawBlocks){
+                    if (canDrawBlocks){  //if destroyLine is called then instantly go to shiftQueue
                         blockList.getNextBlock().drawBlock();
                         blockList.getActiveBlock().drawBlock();
                         // System.out.println("[debug] thread calling drawBlock");
                     }
                     
-                    if(!blockList.getActiveBlock().hasCollided){
+                    if(!blockList.getActiveBlock().hasCollided){ //auto move down as long as it hasnt collided
                         if (blockList.canStartMove())
                             blockList.getActiveBlock().move("DOWN");
-                            // System.out.println("[debug] thread's move down calling drawBlock");
                         blockList.setStartMove(true);
                     } else {
                         blockList.shiftQueue(); // 5,6 > 6,0   tempBlock = 6 > renewList
@@ -62,11 +54,43 @@ public class GameController {
         }
     });
 
-    public void setCanDrawBlocks(boolean bool){
+    Thread runSpecial = new Thread(new Runnable(){
+        @Override
+        public void run() {
+            while (!gameState.isPaused()){
+                try {
+
+                    // System.out.println(blockList.printBlockList());
+
+                    if (canDrawBlocks){  //if destroyLine is called then instantly go to shiftQueue
+                        blockList.getNextBlock().drawBlock();
+                        blockList.getActiveBlock().drawBlock();
+                        // System.out.println("[debug] thread calling drawBlock");
+                    }
+                    
+                    if(!blockList.getActiveBlock().hasCollided){ //auto move down as long as it hasnt collided
+                        if (blockList.canStartMove())
+                            blockList.getActiveBlock().move("DOWN");
+                        blockList.setStartMove(true);
+                    } else {
+                        blockList.shiftQueue(); // 5,6 > 6,0   tempBlock = 6 > renewList
+                        // System.out.println("[debug] shiftQueue called");
+                    }    
+                    
+                    canDrawBlocks=true; //reset
+                    Thread.sleep((long) (gameState.getGameSpeed() * gameState.getRefreshTime()));
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    });
+
+    public void setCanDrawBlocks(boolean bool){ //destroyLine wil set this to false
         canDrawBlocks = bool;
     }
     
-
     public void moveActiveBlock(String direction){
         if(blockList.getActiveBlock() != null){
             
@@ -77,8 +101,11 @@ public class GameController {
     }
 
     public void startGame(){
-        
-        speedGame.start();
+        runGame.start();
+    }
+
+    public void startSpecial(){
+        runSpecial.start();
     }
 
    
