@@ -117,19 +117,19 @@ public class TileLayout {
         int finalY = 0;
         boolean noBlocks=true;
 
-         //iterate every row at x=correspondingX and shift them down
-        for (int i = 0; i < tileLayout.length; i++) {
+        for (int i = 0; i < tileLayout.length; i++) { //iterate every row at x=correspondingX and shift them down
             // System.out.println("[debug]checking row: " + i);
 
-            if(tileLayout[i][x]==Tile.INACTIVE){ //if meets an inactive block
+            if(tileLayout[i][x]==Tile.INACTIVE){ //if meets an inactive block, set as finalY
                 finalY=i-1;
                 noBlocks=false;
                 // System.out.println("[debug] INACTIVE detected, finalY: " + finalY);
                 break;
             }
         }
+        
         if(noBlocks) //if theres no blocks in the way, set finalY to the floor row.
-            finalY = tileLayout.length-1; 
+            finalY = tileLayout.length-1; //21-1
         
         // System.out.println("[debug][getHieghtDiff()] finalY: " + finalY);
         if (finalY-y<=0)

@@ -33,23 +33,23 @@ public class GameController {
             while (!gameState.isPaused()){
                 try {
 
-                    System.out.println(blockList.printBlockList());
+                    // System.out.println(blockList.printBlockList());
 
                     //check condition, if line is destroyed then skip drawBlock, just shiftQueue
                     if (canDrawBlocks){
                         blockList.getNextBlock().drawBlock();
                         blockList.getActiveBlock().drawBlock();
-                        System.out.println("[debug] thread calling drawBlock");
+                        // System.out.println("[debug] thread calling drawBlock");
                     }
                     
                     if(!blockList.getActiveBlock().hasCollided){
                         if (blockList.canStartMove())
                             blockList.getActiveBlock().move("DOWN");
-                            System.out.println("[debug] thread's move down calling drawBlock");
+                            // System.out.println("[debug] thread's move down calling drawBlock");
                         blockList.setStartMove(true);
                     } else {
                         blockList.shiftQueue(); // 5,6 > 6,0   tempBlock = 6 > renewList
-                        System.out.println("[debug] shiftQueue called");
+                        // System.out.println("[debug] shiftQueue called");
                     }    
                     
                     canDrawBlocks=true; //reset
