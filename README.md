@@ -12,9 +12,11 @@ using JNI & c++
   >_added blockList class: handles who now and who next_
   
 - fixed rotation collision - v3
-  >_added logic to indent init drawing point before actually drawing_
+  >_added logic to indent init drawing point_
   
 - can press space to drop + a visible ghost guide (took me 6h) - v2
+  >_embedded drawGhost logic inside drawBlock()_
+  
 - players can move down, right, left, rotate (z,x) - v1
 - complete lines will be destroyed, score works - v1
 
