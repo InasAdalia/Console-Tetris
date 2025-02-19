@@ -1,18 +1,26 @@
 # Console-Tetris
 using JNI & c++ 
 
-# v4
+# v5
+- fixed drawGhost's delay - v5
+  >_fixed canDrawGhost boolean_
+  
+- fixed destroyLine respawning destroyed blocks - v5
+  > _after .destroyLine(), had to .shiftQueue() instantly._
+
 - proper block queue algorithm (bag of 7) - v4
+  >_added blockList class: handles who now and who next_
+  
 - fixed rotation collision - v3
+  >_added logic to indent init drawing point before actually drawing_
+  
 - can press space to drop + a visible ghost guide (took me 6h) - v2
 - players can move down, right, left, rotate (z,x) - v1
 - complete lines will be destroyed, score works - v1
 
 
 ## To-Do:
-- fix destroyLine not including old block
 - fix double drawBlock call
-- fix ghost drawing delay
 
 ## Future To-Do's
 - start from game menu
@@ -23,7 +31,7 @@ using JNI & c++
 
 
 
-## Time Log (total 30.25h)
+## Time Log (total 32h)
 _note: started at 2 Feb 2025. (approx 8 hours maybe) but started recording time at 10 Feb 2025_
 
 **start**
@@ -40,6 +48,9 @@ _note: started at 2 Feb 2025. (approx 8 hours maybe) but started recording time 
 > pushed at 18 Feb 4:16pm - (3.25 hours)
 
 **v4**
+> pushed at 19 Feb 2:05pm - (1.7 hours)
+
+ **v5**
 
 
 
