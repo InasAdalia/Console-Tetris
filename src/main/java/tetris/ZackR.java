@@ -3,7 +3,7 @@ package tetris;
 import java.util.Random;
 
 public class ZackR extends Block {
-    TileLayout layout;
+    TileView tileView;
     int row, col;
     int[] posX = {0,0,0,0}; 
     int[] posY = {0,0,0,0};  
@@ -22,8 +22,8 @@ public class ZackR extends Block {
         },
     };    
     
-    public ZackR(GameView gameView, TileLayout layout) {
-        super(gameView, layout);   
+    public ZackR(GameView gameView, TileView tileView) {
+        super(gameView, tileView);   
         
 
         final Random random = new Random();

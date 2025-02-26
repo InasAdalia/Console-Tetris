@@ -3,7 +3,7 @@ package tetris;
 import java.util.Random;
 
 public class Tee extends Block{
-     TileLayout layout;
+     TileView tileView;
     int row, col;
     int[] posX = {0,0,0,0}; 
     int[] posY = {0,0,0,0};  
@@ -31,8 +31,8 @@ public class Tee extends Block{
         }
     };    
     
-    public Tee(GameView gameView, TileLayout layout) {
-        super(gameView, layout);   
+    public Tee(GameView gameView, TileView tileView) {
+        super(gameView, tileView);   
 
         final Random random = new Random();
         this.shape = shapes[random.nextInt(shapes.length)];

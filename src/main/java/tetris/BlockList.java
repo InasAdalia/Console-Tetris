@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+// HANDLES ALGORITHM OF BLOCK QUEUING & SHUFFLING
+
 public class BlockList {
 
     BlockGenerator blockGenerator;
@@ -16,8 +18,7 @@ public class BlockList {
         this.blockGenerator = blockGenerator;
         this.tempBlock = null;
         this.counter=0;
-        // shuffleList();
-        specialList();
+
     }
 
     public String printBlockList(){

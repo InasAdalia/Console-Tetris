@@ -5,7 +5,7 @@ import java.util.random.RandomGenerator;
 
 public class ElleR extends Block{
 
-    TileLayout layout;
+    TileView tileView;
     int row, col;
     int[] posX = {0,0,0,0}; 
     int[] posY = {0,0,0,0};  
@@ -33,8 +33,8 @@ public class ElleR extends Block{
         }
     };    
     
-    public ElleR(GameView gameView, TileLayout layout) {
-        super(gameView, layout);   
+    public ElleR(GameView gameView, TileView tileView) {
+        super(gameView, tileView);   
         
 
         final Random random = new Random();

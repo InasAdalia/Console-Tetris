@@ -3,6 +3,7 @@ package tetris;
 public class TetrisInput {
 
     private GameController gameController;
+    private GameState gameState;
 
     // Load the C++ library
     static {
@@ -15,8 +16,9 @@ public class TetrisInput {
     // }
     
 
-    public TetrisInput(GameController gameController){
+    public TetrisInput(GameController gameController, GameState gameState){
         this.gameController = gameController;
+        this.gameState = gameState;
     }
 
     public void startKeyListener(){
@@ -64,6 +66,15 @@ public class TetrisInput {
 
     public void keyEsc(){
         System.exit(0);
+    }
+
+    public void keyPause(){
+        if (gameController.runGame != null)
+            gameController.startGame();
+    }
+
+    public void keyRestart(){
+        gameController.resetGame();
     }
 }
 

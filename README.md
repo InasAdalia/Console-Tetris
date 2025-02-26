@@ -1,7 +1,10 @@
 # Console-Tetris
 using JNI & c++ 
 
-# v5
+# v6
+- added Pause & Restart, refactored Block class - v6
+  >_added BlockRenderer & CollisionChecker class_
+
 - fixed drawGhost's delay - v5
   >_fixed canDrawGhost boolean_
   
@@ -22,20 +25,17 @@ using JNI & c++
 
 
 ## To-Do:
+- refactor as u can
 - add lose game logic.
 - fix double drawBlock call (causing minor glitches)
-- increase game speed as they play
 
 ## Future To-Do's
-- start from game menu
-- allow pause/resume (p)
 - save & load game
-- refactor logic & design patterns
+- increase game speed as they play
 
 
 
-
-## Time Log (total 32h)
+## Time Log (total 33.5h)
 _note: started at 2 Feb 2025. (approx 8 hours maybe) but started recording time at 10 Feb 2025_
 
 **start**
@@ -55,6 +55,9 @@ _note: started at 2 Feb 2025. (approx 8 hours maybe) but started recording time 
 > pushed at 19 Feb 2:05pm - (1.7 hours)
 
  **v5**
+ > pushed at 26 Feb 10:32am - (1.5 hours)
+
+ **v6**
 
 
 

@@ -1,19 +1,22 @@
 package tetris;
 
-public class TileLayout {
+public class TileView {
     
     GameController gameController;
     GameState gameState;
-    int initRow=0, initCol=3;
-    Tile[][] tileLayout;
+    Tile[][] TileView;
 
-    public TileLayout(GameState gameState, GameController gameController) {
+    public TileView(GameState gameState, GameController gameController) {
         this.gameState = gameState;
-        tileLayout = new Tile [20][10];
+        TileView = new Tile [20][10];
         
-        for (int i = 0; i < tileLayout.length; i++) {
-            for (int j = 0; j < tileLayout[i].length; j++) {
-                tileLayout[i][j] = Tile.EMPTY;
+        clearTileView();
+    }
+
+    public void clearTileView(){
+        for (int i = 0; i < TileView.length; i++) {
+            for (int j = 0; j < TileView[i].length; j++) {
+                TileView[i][j] = Tile.EMPTY;
             }
         }
     }
@@ -22,18 +25,18 @@ public class TileLayout {
         this.gameController = gameController;
     }
 
-    public void showLayout(){
+    public void showtileView(){
 
         System.out.printf("%4s", "");
-        for (int i = 0; i < tileLayout[0].length; i++) {
+        for (int i = 0; i < TileView[0].length; i++) {
             System.out.print((i+1)+" ");
         }
         System.out.println();
         
-        for (int i = 0; i <tileLayout.length; i++) {
+        for (int i = 0; i <TileView.length; i++) {
             System.out.printf("%2d |", i+1);
-            for (int j = 0; j < tileLayout[i].length; j++) {
-                System.out.print(tileLayout[i][j].getSymbol());
+            for (int j = 0; j < TileView[i].length; j++) {
+                System.out.print(TileView[i][j].getSymbol());
             }
             System.out.println("|");
         }
@@ -43,7 +46,7 @@ public class TileLayout {
 
     public String drawHorLine(String line){
         StringBuilder sb = new StringBuilder();
-        for(int i=0; i<tileLayout[0].length; i++){
+        for(int i=0; i<TileView[0].length; i++){
             sb.append(line);
         }
         return sb.toString();
@@ -51,25 +54,25 @@ public class TileLayout {
 
     public void setPatternAt(Tile tile, int row, int col){
         try{
-            this.tileLayout[row][col] = tile;
+            this.TileView[row][col] = tile;
         } catch (ArrayIndexOutOfBoundsException e){
             throw new ArrayIndexOutOfBoundsException();
         }
     }
 
     public String getPatternAt(int row, int col){
-        return this.tileLayout[row][col].getSymbol();
+        return this.TileView[row][col].getSymbol();
     }
 
     public boolean hasBlockAt(Tile tile, int row, int col){
-        return tileLayout[row][col] == tile; 
+        return TileView[row][col] == tile; 
     }
 
     private boolean isCompleteRow(int row){
 
         boolean fullyOccupied = false;
-        for (int j = 0; j < tileLayout[row].length; j++) {
-            if (tileLayout[row][j] != Tile.INACTIVE){
+        for (int j = 0; j < TileView[row].length; j++) {
+            if (TileView[row][j] != Tile.INACTIVE){
                 // fullyOccupied = true;
                 // System.out.println("col: " + j + "is occupied");
                 fullyOccupied = false;
@@ -87,15 +90,15 @@ public class TileLayout {
 
     private void destroyRow(int row){
 
-        for (int i = 0; i < tileLayout[row].length; i++) {
-            tileLayout[row][i] = Tile.EMPTY;
+        for (int i = 0; i < TileView[row].length; i++) {
+            TileView[row][i] = Tile.EMPTY;
         }
 
         //shift down the rest of the rows above the destroyed row.
-        tileLayout[0][0] = Tile.EMPTY; //set topmost as empty
+        TileView[0][0] = Tile.EMPTY; //set topmost as empty
         for (int i = row; i > 0; i--) {
-            for (int j = 0; j < tileLayout[0].length; j++) {
-                tileLayout[i][j] = tileLayout[i-1][j];
+            for (int j = 0; j < TileView[0].length; j++) {
+                TileView[i][j] = TileView[i-1][j];
             }
         }
 
@@ -104,11 +107,11 @@ public class TileLayout {
     }
 
     public void checkRows(){
-        for (int i = 0; i < tileLayout.length; i++) {
+        for (int i = 0; i < TileView.length; i++) {
             if (isCompleteRow(i)){
                 destroyRow(i);
                 gameState.incScore();
-                gameController.setCanDrawBlocks(false);
+                gameController.setInstantlyShift(true);
             }
         }
     }
@@ -117,10 +120,10 @@ public class TileLayout {
         int finalY = 0;
         boolean noBlocks=true;
 
-        for (int i = 0; i < tileLayout.length; i++) { //iterate every row at x=correspondingX and shift them down
+        for (int i = 0; i < TileView.length; i++) { //iterate every row at x=correspondingX and shift them down
             // System.out.println("[debug]checking row: " + i);
 
-            if(tileLayout[i][x]==Tile.INACTIVE){ //if meets an inactive block, set as finalY
+            if(TileView[i][x]==Tile.INACTIVE){ //if meets an inactive block, set as finalY
                 finalY=i-1;
                 noBlocks=false;
                 // System.out.println("[debug] INACTIVE detected, finalY: " + finalY);
@@ -129,7 +132,7 @@ public class TileLayout {
         }
         
         if(noBlocks) //if theres no blocks in the way, set finalY to the floor row.
-            finalY = tileLayout.length-1; //21-1
+            finalY = TileView.length-1; //21-1
         
         // System.out.println("[debug][getHieghtDiff()] finalY: " + finalY);
         if (finalY-y<=0)
@@ -140,19 +143,19 @@ public class TileLayout {
 
     public void eraseByPattern(Tile pattern){
         //iterate every tile
-        for (int i = 0; i < tileLayout.length; i++) {
-            for (int j = 0; j < tileLayout[i].length; j++) {
-                if (tileLayout[i][j] == pattern){
-                    tileLayout[i][j] = Tile.EMPTY;
+        for (int i = 0; i < TileView.length; i++) {
+            for (int j = 0; j < TileView[i].length; j++) {
+                if (TileView[i][j] == pattern){
+                    TileView[i][j] = Tile.EMPTY;
                 }
             }
         }
     }
 
     public void switchPattern(Tile oldPattern, Tile newPattern){
-        for (int i = 0; i < tileLayout.length; i++) {
-            for (int j = 0; j < tileLayout[i].length; j++) {
-                if (tileLayout[i][j] == Tile.GHOST){
+        for (int i = 0; i < TileView.length; i++) {
+            for (int j = 0; j < TileView[i].length; j++) {
+                if (TileView[i][j] == Tile.GHOST){
                     setPatternAt(Tile.INACTIVE, i, j);
                 }
             }

@@ -6,11 +6,11 @@ public class GameState {
     boolean pause;
     boolean gameover;
     Double refreshTime = (double)(100);
-    Double gameSpeed = 3d;
+    Double gameSpeed = 2d;
 
     public GameState(){ 
         this.score=0;
-        this.pause=false;
+        this.pause=true;
         this.gameover=false;
     }
 

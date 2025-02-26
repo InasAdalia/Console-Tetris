@@ -2,7 +2,7 @@ package tetris;
 
 public class Smashboy extends Block {
 
-    TileLayout layout;
+    TileView tileView;
     int[] posX = {0,0,0,0}; //3,4,3,4
     int[] posY = {0,0,0,0};  //0,0,1,1
     int[][] shape = {  // Initialize shape here
@@ -14,8 +14,8 @@ public class Smashboy extends Block {
     };
 
 
-    public Smashboy(GameView gameView, TileLayout layout) {
-        super(gameView, layout);           
+    public Smashboy(GameView gameView, TileView tileView) {
+        super(gameView, tileView);           
         setBlock(shapes, shape, "Smashboy", posX, posY);
     }
 }

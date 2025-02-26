@@ -15,10 +15,12 @@ JNIEXPORT void JNICALL Java_tetris_TetrisInput_getKeyPress(JNIEnv *env, jobject 
     jmethodID keyDown = env->GetMethodID(inputClass, "keyDown", "()V");
     jmethodID keyRight = env->GetMethodID(inputClass, "keyRight", "()V");
     jmethodID keyLeft = env->GetMethodID(inputClass, "keyLeft", "()V");
-    jmethodID keyRotateR = env->GetMethodID(inputClass, "keyRotateR", "()V");
-    jmethodID keyRotateL = env->GetMethodID(inputClass, "keyRotateL", "()V");
+    jmethodID keyRotateR = env->GetMethodID(inputClass, "keyRotateR", "()V"); //X
+    jmethodID keyRotateL = env->GetMethodID(inputClass, "keyRotateL", "()V"); //Z
     jmethodID keySpace = env->GetMethodID(inputClass, "keySpace", "()V");
     jmethodID keyEsc = env->GetMethodID(inputClass, "keyEsc", "()V");
+    jmethodID keyPause = env->GetMethodID(inputClass, "keyPause", "()V"); //P
+    jmethodID keyRestart = env->GetMethodID(inputClass, "keyRestart", "()V"); //R
     // jmethodID resetKeyPressed = env->GetMethodID(inputClass, "resetKeyPressed", "()V");
 
     if (!keyDown || !keyRight || !keyLeft || !keyEsc|| !keySpace) {
@@ -34,6 +36,8 @@ JNIEXPORT void JNICALL Java_tetris_TetrisInput_getKeyPress(JNIEnv *env, jobject 
     RegisterHotKey(NULL, 4, 0x00, 0x58); // X key (0x58 in hex)
     RegisterHotKey(NULL, 5, 0x00, 0x5A); // Z key (0x5A in hex)
     RegisterHotKey(NULL, 6, 0x00, VK_SPACE);
+    RegisterHotKey(NULL, 7, 0x00, 0x50); // P key (0x50 in hex)
+    RegisterHotKey(NULL, 8, 0x00, 0x52); // R key (0x52 in hex)
 
     MSG msg;
     std::cout << "[C++] Listening for key presses..." << std::endl;
@@ -65,6 +69,12 @@ JNIEXPORT void JNICALL Java_tetris_TetrisInput_getKeyPress(JNIEnv *env, jobject 
                         break;
                     case 6:
                         env->CallVoidMethod(obj, keySpace);
+                        break;
+                    case 7:
+                        env->CallVoidMethod(obj, keyPause);
+                        break;
+                    case 8:
+                        env->CallVoidMethod(obj, keyRestart);
                         break;
                     default:
                         break;

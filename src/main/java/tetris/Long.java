@@ -3,7 +3,7 @@ package tetris;
 import java.util.Random;
 
 public class Long extends Block {
-    TileLayout layout;
+    TileView tileView;
     int row, col;
     int[] posX = {0,0,0,0}; 
     int[] posY = {0,0,0,0};  
@@ -22,8 +22,8 @@ public class Long extends Block {
         },
     };    
     
-    public Long(GameView gameView, TileLayout layout) {
-        super(gameView, layout);   
+    public Long(GameView gameView, TileView tileView) {
+        super(gameView, tileView);   
         this.shape= shapes[0]; //fixed to spawn as shape[0]
         
        setBlock(shapes, shape, "LONG", posX, posY);

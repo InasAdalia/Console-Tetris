@@ -3,9 +3,9 @@ package tetris;
 public class GameView {
     
     GameState gameState;
-    TileLayout layout;
-    boolean hasStarted;
-    String[][] qLayout = {
+    TileView tileView;
+    boolean hasStarted, resetMessage=true;
+    String[][] qtileView = {
         {"  ","  ","  ","  "},
         {"  ","  ","  ","  "},
         {"  ","  ","  ","  "},
@@ -14,16 +14,19 @@ public class GameView {
     Block qBlock; //block in queue
     StringBuilder messageSB = new StringBuilder();
 
-    public GameView(TileLayout layout, GameState gameState) {
-        this.layout = layout;
+    public GameView(TileView tileView, GameState gameState) {
+        this.tileView = tileView;
         this.gameState = gameState;
         hasStarted = false;
     }
 
-    public void showGameLayout(){
+    public void showGameView(){
 
         //reset message area
-        messageSB.setLength(0);
+        if (resetMessage)
+            messageSB.setLength(0);
+        else
+            resetMessage = true;
 
         System.out.print("\033c");
 
@@ -34,9 +37,10 @@ public class GameView {
         } else{
             showQueue();
             System.out.println("SCORE : " + gameState.getScore());
+            System.out.println("SPEED : " + gameState.getGameSpeed());
         }
 
-        layout.showLayout();
+        tileView.showtileView();
 
         System.out.println(messageSB.toString());
         
@@ -47,32 +51,48 @@ public class GameView {
         return messageSB.append(message).toString();
     }
 
-    public void setQueueLayout(Block block){
+    public void setQueuetileView(Block block){
         //erase the previous block in queue
-        for (int i=0; i<qLayout.length; i++) {
-            for (int j=0; j<qLayout[i].length; j++) {
-                qLayout[i][j] = "  ";
-            }
-        }
+        eraseQueuetileView();
 
         //draw?
 
         qBlock = block;
     }
 
+    private void eraseQueuetileView(){
+        for (int i=0; i<qtileView.length; i++) {
+            for (int j=0; j<qtileView[i].length; j++) {
+                qtileView[i][j] = "  ";
+            }
+        }
+    }
+
+    public void resetMessage(boolean bool){
+        resetMessage = bool;
+    }
+
     public void showQueue(){
         System.out.println("NEXT:");
 
-        for (int i=0; i<qLayout.length; i++) {
+        for (int i=0; i<qtileView.length; i++) {
             // System.out.printf("%2d |", i);
-            for (int j=0; j<qLayout[i].length; j++) {
-                System.out.print(qLayout[i][j]);
+            for (int j=0; j<qtileView[i].length; j++) {
+                System.out.print(qtileView[i][j]);
             }
             System.out.println();
         }
     }
 
     public void setPatternAt(int row, int col) {    //this is for drawing block in queue
-        qLayout[row][col] = Tile.BLOCK.getSymbol();
+        qtileView[row][col] = Tile.BLOCK.getSymbol();
+    }
+
+    public void resetGameView(){
+        tileView.clearTileView();
+        eraseQueuetileView();
+        gameState.resetScore();
+
+        showGameView();
     }
 }

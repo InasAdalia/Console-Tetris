@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class ElleL extends Block{
 
-    TileLayout layout;
     int row, col;
     int[] posX = {0,0,0,0}; 
     int[] posY = {0,0,0,0};  
@@ -32,8 +31,8 @@ public class ElleL extends Block{
         }
     };    
     
-    public ElleL(GameView gameView, TileLayout layout) {
-        super(gameView, layout);   
+    public ElleL(GameView gameView, TileView tileView) {
+        super(gameView, tileView);   
         
         final Random random = new Random();
         this.shape = shapes[random.nextInt(shapes.length)];
