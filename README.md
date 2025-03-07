@@ -38,7 +38,7 @@ using JNI & c++
 
 
 
-## Time Log (total 33.5h)
+## Time Log (total 34.5h)
 _note: started at 2 Feb 2025. (approx 8 hours maybe) but started recording time at 10 Feb 2025_
 
 **start**
