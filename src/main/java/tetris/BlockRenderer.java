@@ -10,6 +10,7 @@ public class BlockRenderer {
     GameView gameView;
     CollisionChecker collisionChecker;
     boolean canDrawGhost;
+    int initY,initX; //topmost & leftmost point of the shape
 
     
     public BlockRenderer (Block block, TileView tileView, GameView gameView, CollisionChecker collisionChecker){
@@ -38,39 +39,12 @@ public class BlockRenderer {
         int[] heightDiffs = {-1,-1,-1,-1};
         canDrawGhost = true;
        
-
-        int initRow,initCol;
-        if (!block.inQueue && !block.isFirstSpawn) {    //to continue drawing blocks alrdy in 'main' tileView 
-            initRow = Arrays.stream(block.posY).min().getAsInt();     // has to get the topmost point of the pattern
-            initCol = Arrays.stream(block.posX).min().getAsInt();     //has to get the leftmost point of the pattern
-        } else if (!block.inQueue && block.isFirstSpawn){ //for drawing first spawn of block in 'main' tileView
-            initRow = 0;
-            initCol = 3;
-        } else {    //for drawing in 'queue' tileView
-            initRow = 0;
-            initCol = 0;
-            canDrawGhost = false;
-        }
-        // System.out.println("[debug] inQueue: " + inQueue + " isFirstSpawn: " + isFirstSpawn);
-        // System.out.println("[debug] all posX: " + Arrays.toString(posX));
-        // System.out.println("[debug] all posY: " + Arrays.toString(posY));
-        // System.out.println("[debug] initial row: " + initRow + " initial col: " + initCol );
-        
-        //prevents collision by adjusting initial drawing points to be within the bounds
-        if (collisionChecker.exceedsHeightBoundaries(initRow)) {
-            initRow = initRow - collisionChecker.exceededHeight(initRow);
-        } else if(collisionChecker.exceedsWidthBoundaries(initCol)) {
-            initCol = initCol - collisionChecker.exceededWidth(initCol);
-        }
-        
-        // System.out.println("[debug] initial row: " + initRow + " initial col: " + initCol );
-
         int arrayIndex = 0; //for the for loop down here:
-        for (int i = initRow; i<initRow+block.shape.length; i++) {
-            for (int j = initCol; j<initCol+block.shape[0].length; j++) { 
+        for (int i = initY; i<initY+block.shape.length; i++) {
+            for (int j = initX; j<initX+block.shape[0].length; j++) { 
 
                 // System.out.println("[debug] now reading col: " + j + " no. of col per row is: " + shape[0].length);
-                if (block.shape[i-initRow][j-initCol] == 1) { 
+                if (block.shape[i-initY][j-initX] == 1) { 
 
                     if(!collisionChecker.willCollideAt(i, j)){
                         //stores each piece
@@ -108,6 +82,7 @@ public class BlockRenderer {
             }
         }
 
+        //GHOST BLOCK LOGIC
         // System.out.println("[debug] heightDiffs: " + Arrays.toString(heightDiffs));
         block.ghostDiff = Arrays.stream(heightDiffs).min().getAsInt(); //fetches the shortest height diff 
         if (block.ghostDiff>0){
@@ -129,5 +104,34 @@ public class BlockRenderer {
         canDrawGhost=true;
     }
 
+    //block renderer is responsible in determining logic of where to draw the block
+    public void updateInitPos(){
+        if (!block.inQueue && !block.isFirstSpawn) {    //resumes drawing blocks alrdy in 'main' tileView 
+            initY = Arrays.stream(block.posY).min().getAsInt(); //topmost point of the pattern
+            initX = Arrays.stream(block.posX).min().getAsInt(); //leftmost point of the pattern
+
+        } else if (!block.inQueue && block.isFirstSpawn){ //draws first spawn of block in 'main' tileView
+            initY = 0;
+            initX = 3;
+
+        } else {    //draws in 'queue' tileView
+            initY = 0;
+            initX = 0;
+            canDrawGhost = false;
+        }
+    }
+
+    public int getInitX(){
+        return initX;
+    }
+
+    public int getInitY(){
+        return initY;
+    }
+
+    public void setInitPos(int initX, int initY){
+        this.initX = initX;
+        this.initY=initY;
+    }
     
 }

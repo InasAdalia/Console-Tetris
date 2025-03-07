@@ -11,13 +11,14 @@ public abstract class Block {
     protected BlockRenderer blockRenderer;
     protected GameView gameView;
     protected String type;
+    protected int initX, initY;
     protected int[] posX, posY;  // X-coordinates for each block piece
     protected int[] ghostX = {0,0,0,0};
     protected int[] ghostY = {0,0,0,0};
     protected int[][] shape;
     protected int[][][] shapes;
     protected Tile tile;
-    protected boolean deactivateOnNext, hasCollided, inQueue, isFirstSpawn, canDrawGhost;
+    protected boolean deactivateOnNext, hasCollided, inQueue, isFirstSpawn;
     protected int ghostDiff;
     
 
@@ -42,66 +43,71 @@ public abstract class Block {
         this.isFirstSpawn = true;
     }
 
-    public void move(String direction) {
-        System.out.println("moving");
-        int curShapeIndex = Arrays.asList(shapes).indexOf(shape); //for rotation
+    public void move(Movements direction) {
+        // System.out.println("moving");
+
+        int curShapeIndex = Arrays.asList(shapes).indexOf(shape); //fetches the cur shape index for rotation
         blockRenderer.eraseBlock();
+
         if (tile != Tile.INACTIVE){
             
-            if(direction.toUpperCase().equals("DOWN")){ //move down
-                if (!collisionChecker.willCollideBottom()) { // If there's no collision, move the block
-                    //if deactivated, reactivate it.
-                    if (tile == Tile.INACTIVE){
-                        reactivateBlock();
-                    }
-                    
-                    for (int i = 0; i < 4; i++) { 
-                        posY[i]++; 
-                    }
-                    System.out.println("should have moved");
-                } 
+            if(direction.equals( Movements.DOWN )&& !collisionChecker.willCollideBottom()){ //move down
+                for (int i = 0; i < 4; i++) { posY[i]++; }
+                // System.out.println("[debug] should have moved");
                 
-            } else if(direction.toUpperCase().equals("LEFT")){ //move left
-                if (!collisionChecker.willCollideWall("LEFT"))
-                    for (int i = 0; i < 4; i++) {
-                        posX[i]--; 
-                    }
+            } else if(direction.equals( Movements.LEFT) && !collisionChecker.willCollideWall("LEFT")){ //move left
+                for (int i = 0; i < 4; i++) { posX[i]--;}
                 
-            } else if(direction.toUpperCase().equals("RIGHT")){ //move right
-                if (!collisionChecker.willCollideWall("RIGHT"))
-                    for (int i = 0; i < 4; i++) {
-                        posX[i]++;
-                    }
+            } else if(direction.equals( Movements.RIGHT) && !collisionChecker.willCollideWall("RIGHT")){ //move right
+                for (int i = 0; i < 4; i++) {posX[i]++;}
 
-            } else if (direction.toUpperCase().equals("ROTATER")) { //rotate right
+            } else if(direction.equals( Movements.ROTATER)) { //rotate right
+
                 shape = shapes[(curShapeIndex + 1) % shapes.length];
                 deactivateOnNext = false;
     
-            } else if (direction.toUpperCase().equals("ROTATEL")) { //rotate left
+            } else if(direction.equals( Movements.ROTATEL)) { //rotate left
+
                 shape = (curShapeIndex-1 == -1)? shapes[shapes.length-1] : shapes[curShapeIndex-1];
                 deactivateOnNext = false;
 
-            } else if (direction.toUpperCase().equals("SPACE")) { //drop block
+            } else if(direction.equals(Movements.DROP)) { //drop block
 
                 //replaces ghost with actual tiles.
                 for (int i = 0; i < 4; i++) {
                     posY[i] = posY[i]+ghostDiff;
                 }
-                deactivateBlock();                
+                deactivateOnNext = true;  //without this it will delay the deactivation effect by one tick.   
             }
 
-            if (!collisionChecker.willCollideBottom()) {   //checks collision & deactivation logic
+
+            //Handles deactivation logic
+            if (!collisionChecker.willCollideBottom()) {
                 deactivateOnNext=false;
     
-                if (tile == Tile.INACTIVE){ //if deactivated, reactivate it. allows last minute movements made by players.
+                if (tile == Tile.INACTIVE) //if deactivated, reactivate it. allows last minute movements made by players.
                     reactivateBlock();
-                }
+                
             } else if (collisionChecker.willCollideBottom() && !deactivateOnNext){
                 deactivateOnNext = true;
             } else if (collisionChecker.willCollideBottom() && deactivateOnNext){
                 deactivateBlock();
             }
-            // System.out.println("[debug] move() calling drawBlock()");
+                  
+            //setting up and adjusting drawing points
+            blockRenderer.updateInitPos(); //blockrenderer is responsible in determining where init draw points are on view.
+            initX = blockRenderer.getInitX();
+            initY = blockRenderer.getInitY();
+            
+            //adjusts drawing points based on collision
+            if (collisionChecker.exceedsHeightBoundaries(initY)) {
+                initY = initY - collisionChecker.exceededHeight(initY);
+            } else if(collisionChecker.exceedsWidthBoundaries(initX)) {
+                initX = initX - collisionChecker.exceededWidth(initX);
+            }
+
+            //render
+            blockRenderer.setInitPos(initX, initY);
             blockRenderer.drawBlock();
         }        
     }

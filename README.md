@@ -1,7 +1,10 @@
 # Console-Tetris
 using JNI & c++ 
 
-# v6
+# v7
+- refactored Block, BlockRenderer & CollisionChecker - v7
+  >_refactored their actual responsibilities & simplified move() in block class_
+
 - added Pause & Restart, refactored Block class - v6
   >_added BlockRenderer & CollisionChecker class_
 

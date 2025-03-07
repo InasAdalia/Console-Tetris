@@ -6,7 +6,6 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
         GameState gameState = new GameState();
@@ -36,7 +35,7 @@ public class App {
                     case 3:
                         System.out.println("MOVEMENTS: [use arrow keys]" +  
                         "\nROTATE LEFT: [Z] \nROTATE RIGHT: [X] \nDROP BLOCK: [SPACE] \nPAUSE/RESUME: [ESC] \n\nenter 0 to go back");
-                        int choice = Integer.parseInt(System.console().readLine());
+                        Integer.parseInt(System.console().readLine());
                         break;
                     case 4:
                         exit = true;

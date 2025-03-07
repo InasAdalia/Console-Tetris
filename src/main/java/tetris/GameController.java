@@ -22,39 +22,6 @@ public class GameController {
         this.blockList = new BlockList(generator, gameView); //shuffledList is already prepared atp.
     }
     
-    // Thread runGame = new Thread(new Runnable(){
-    //     @Override
-    //     public void run() {
-    //         while (!gameState.isPaused()){
-    //             try {
-
-    //                 // System.out.println(blockList.printBlockList());
-
-    //                 if (canInstantlyShift){  //if destroyLine is called then instantly go to shiftQueue
-    //                     blockList.getNextBlock().drawBlock();
-    //                     blockList.getActiveBlock().drawBlock();
-    //                     // System.out.println("[debug] thread calling drawBlock");
-    //                 }
-                    
-    //                 if(!blockList.getActiveBlock().hasCollided){ //auto move down as long as it hasnt collided
-    //                     if (blockList.canStartMove())
-    //                         blockList.getActiveBlock().move("DOWN");
-    //                     blockList.setStartMove(true);
-    //                 } else {
-    //                     blockList.shiftQueue(); // 5,6 > 6,0   tempBlock = 6 > renewList
-    //                     // System.out.println("[debug] shiftQueue called");
-    //                 }    
-                    
-    //                 canInstantlyShift=true; //reset
-    //                 Thread.sleep((long) (gameState.getGameSpeed() * gameState.getRefreshTime()));
-
-    //             } catch (InterruptedException e) {
-    //                 e.printStackTrace();
-    //             }
-    //         }
-    //     }
-    // });
-
     Thread runSpecial = new Thread(new Runnable(){
         @Override
         public void run() {
@@ -71,7 +38,7 @@ public class GameController {
                     
                     if(!blockList.getActiveBlock().hasCollided){ //auto move down as long as it hasnt collided
                         if (blockList.canStartMove())
-                            blockList.getActiveBlock().move("DOWN");
+                            blockList.getActiveBlock().move(Movements.DOWN);
                         blockList.setStartMove(true);
                     } else {
                         blockList.shiftQueue(); // 5,6 > 6,0   tempBlock = 6 > renewList
@@ -92,7 +59,7 @@ public class GameController {
         canInstantlyShift = bool;
     }
     
-    public void moveActiveBlock(String direction){
+    public void moveActiveBlock(Movements direction){
         if(blockList.getActiveBlock() != null && !gameState.isPaused()){
             
             blockList.getActiveBlock().move(direction);
@@ -121,7 +88,7 @@ public class GameController {
                             
                             if(!blockList.getActiveBlock().hasCollided){ 
                                 if (blockList.canStartMove())
-                                    blockList.getActiveBlock().move("DOWN");
+                                    blockList.getActiveBlock().move(Movements.DOWN);
                                 blockList.setStartMove(true);
                             } else {
                                 blockList.shiftQueue(); 
@@ -176,7 +143,7 @@ public class GameController {
                         
                         if(!blockList.getActiveBlock().hasCollided){ //auto move down as long as it hasnt collided
                             if (blockList.canStartMove())
-                                blockList.getActiveBlock().move("DOWN");
+                                blockList.getActiveBlock().move(Movements.DOWN);
                             blockList.setStartMove(true);
                         } else {
                             blockList.shiftQueue(); // 5,6 > 6,0   tempBlock = 6 > renewList

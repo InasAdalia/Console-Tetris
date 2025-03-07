@@ -35,32 +35,32 @@ public class TetrisInput {
 
     public void keyDown(){
         System.out.println("trying key down");
-        gameController.moveActiveBlock("DOWN");
+        gameController.moveActiveBlock(Movements.DOWN);
         System.out.println("key down ");
     }
 
     public void keyRight(){
-        gameController.moveActiveBlock("RIGHT");
+        gameController.moveActiveBlock(Movements.RIGHT);
         System.out.println("key right ");
     }
 
     public void keyLeft(){
-        gameController.moveActiveBlock("LEFT");
+        gameController.moveActiveBlock(Movements.LEFT);
         System.out.println("key left ");
     }
 
     public void keyRotateR(){
-        gameController.moveActiveBlock("ROTATER");
+        gameController.moveActiveBlock(Movements.ROTATER);
         System.out.println("key rotate right ");
     }
 
     public void keyRotateL(){
-        gameController.moveActiveBlock("ROTATEL");
+        gameController.moveActiveBlock(Movements.ROTATEL);
         System.out.println("key rotate left ");
     }
 
     public void keySpace(){
-        gameController.moveActiveBlock("SPACE");
+        gameController.moveActiveBlock(Movements.DROP);
         // System.out.println("key space ");
     }
 
