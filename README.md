@@ -1,7 +1,10 @@
 # Console-Tetris
 using JNI & c++ 
 
-# v7
+# v8
+- refactored CollisionChecker's methods - v8
+  >combined into willColide() combined into adjustWithinHeight/Width()_
+  
 - refactored Block, BlockRenderer & CollisionChecker - v7
   >_refactored their actual responsibilities & simplified move() in block class_
 
@@ -38,7 +41,7 @@ using JNI & c++
 
 
 
-## Time Log (total 34.5h)
+## Time Log (total 35h)
 _note: started at 2 Feb 2025. (approx 8 hours maybe) but started recording time at 10 Feb 2025_
 
 **start**
@@ -64,6 +67,9 @@ _note: started at 2 Feb 2025. (approx 8 hours maybe) but started recording time 
  > pushed at 7 March 11pm - (1 hour)
 
  **v7**
+  > pushed at 8 March 11:48am - (20 minutes)
+
+ **v8**
 
 
 
