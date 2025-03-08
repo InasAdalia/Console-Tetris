@@ -51,14 +51,14 @@ public abstract class Block {
 
         if (tile != Tile.INACTIVE){
             
-            if(direction.equals( Movements.DOWN )&& !collisionChecker.willCollideBottom()){ //move down
+            if(direction.equals( Movements.DOWN )&& !collisionChecker.willCollide(0,1)){ //move down
                 for (int i = 0; i < 4; i++) { posY[i]++; }
                 // System.out.println("[debug] should have moved");
                 
-            } else if(direction.equals( Movements.LEFT) && !collisionChecker.willCollideWall("LEFT")){ //move left
+            } else if(direction.equals( Movements.LEFT) && !collisionChecker.willCollide((-1),0)){ //move left
                 for (int i = 0; i < 4; i++) { posX[i]--;}
                 
-            } else if(direction.equals( Movements.RIGHT) && !collisionChecker.willCollideWall("RIGHT")){ //move right
+            } else if(direction.equals( Movements.RIGHT) && !collisionChecker.willCollide(1,0)){ //move right
                 for (int i = 0; i < 4; i++) {posX[i]++;}
 
             } else if(direction.equals( Movements.ROTATER)) { //rotate right
@@ -82,29 +82,22 @@ public abstract class Block {
 
 
             //Handles deactivation logic
-            if (!collisionChecker.willCollideBottom()) {
+            if (!collisionChecker.willCollide(0,1)) { //offset one down
                 deactivateOnNext=false;
     
                 if (tile == Tile.INACTIVE) //if deactivated, reactivate it. allows last minute movements made by players.
                     reactivateBlock();
                 
-            } else if (collisionChecker.willCollideBottom() && !deactivateOnNext){
+            } else if (collisionChecker.willCollide(0,1) && !deactivateOnNext){
                 deactivateOnNext = true;
-            } else if (collisionChecker.willCollideBottom() && deactivateOnNext){
+            } else if (collisionChecker.willCollide(0,1) && deactivateOnNext){
                 deactivateBlock();
             }
-                  
-            //setting up and adjusting drawing points
-            blockRenderer.updateInitPos(); //blockrenderer is responsible in determining where init draw points are on view.
-            initX = blockRenderer.getInitX();
-            initY = blockRenderer.getInitY();
-            
+
             //adjusts drawing points based on collision
-            if (collisionChecker.exceedsHeightBoundaries(initY)) {
-                initY = initY - collisionChecker.exceededHeight(initY);
-            } else if(collisionChecker.exceedsWidthBoundaries(initX)) {
-                initX = initX - collisionChecker.exceededWidth(initX);
-            }
+            blockRenderer.updateInitPos();  //the one responsible in determining where init draw points are on view.
+            initX = collisionChecker.adjustWithinWidth(blockRenderer.getInitX());
+            initY = collisionChecker.adjustWithinHeight(blockRenderer.getInitY());
 
             //render
             blockRenderer.setInitPos(initX, initY);

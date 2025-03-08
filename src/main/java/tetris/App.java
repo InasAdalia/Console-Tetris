@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class App {
 
+    //TODO: TileView is checking & destroying line. create a LineDestroyer/TileController/ wtvr the name is class
+
     public static void main(String[] args) throws Exception {
 
         boolean exit = false;
